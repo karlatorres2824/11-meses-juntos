@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>11 Meses Juntos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url('fondoluis.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 1;
+        }
+
+        .step {
+            display: none;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .step.active { display: flex; flex-direction: column; align-items: center; }
+
+        /* Texto Limpio y Nítido */
+        .title-clean {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            color: #801b2a;
+            line-height: 1.2;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .btn-start {
+            background: #801b2a;
+            color: #ffffff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-start:hover {
+            background: #a32e3f;
+        }
+
+        /* PASO 2: Carga Limpia */
+        .loading-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px 25px;
+            border-radius: 16px;
+            width: 100%;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #eee;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 20px 0 10px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: #801b2a;
+            transition: width 0.3s;
+        }
+
+        /* PASO 3: Sobre Rojo Clásico */
+        .envelope-wrapper {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background: #801b2a;
+            border-radius: 0 0 8px 8px;
+            cursor: pointer;
+            margin-top: 40px;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 160px solid transparent;
+            border-right: 160px solid transparent;
+            border-top: 120px solid #9e2334;
+            transform-origin: top;
+            transition: transform 0.5s ease;
+            z-index: 4;
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 160px solid #701c27;
+            border-right: 160px solid #701c27;
+            border-bottom: 120px solid #801b2a;
+            border-radius: 0 0 8px 8px;
+            z-index: 3;
+        }
+
+        .letter-card {
+            position: absolute;
+            bottom: 10px;
+            left: 15px;
+            width: 290px;
+            height: 190px;
+            background: #ffffff;
+            border-radius: 4px;
+            padding: 20px;
+            transition: all 0.6s ease;
+            z-index: 2;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .envelope-wrapper.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-wrapper.open .letter-card {
+            transform: translateY(-160px);
+            height: auto;
+            max-height: 480px;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 450px;
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            overflow-y: auto;
+        }
+
+        .letter-card h3 {
+            font-family: 'Dancing Script', cursive;
+            color: #801b2a;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .letter-card p {
+            color: #333;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .signature {
+            text-align: right;
+            font-weight: 600;
+            color: #801b2a;
+            margin-top: 15px;
+        }
+
+        .click-hint {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <!-- PASO 1 -->
+    <div class="step active" id="step1">
+        <h1 class="title-clean">Happy 11 months together</h1>
+        <button class="btn-start" onclick="startLoading()">Descubrir</button>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="step" id="step2">
+        <div class="loading-card">
+            <h2 style="color: #801b2a; font-family: 'Dancing Script', cursive; font-size: 2.3rem;">Cargando...</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p id="progressText" style="color: #801b2a; font-weight: 600;">0%</p>
+        </div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="step" id="step3">
+        <p class="click-hint">Toca el sobre para abrir tu carta</p>
+        
+        <div class="envelope-wrapper" id="envelope" onclick="openEnvelope()">
+            <div class="envelope-flap"></div>
+            <div class="letter-card">
+                <h3>Mi amor,</h3>
+                <p>11 meses contigo y todavía me parece increíble pensar en todo lo que hemos construido desde aquel día en que nuestras vidas se cruzaron. No sé qué nos tenga preparado el futuro, pero sí sé que hoy te amo con una profundidad que nunca imaginé sentir por alguien.</p>
+                <p>Gracias por ser mi compañero, por cada abrazo que me devuelve la calma, por cada detalle y por cada momento en el que me haces sentir que no estoy sola. Hemos aprendido, hemos crecido y seguimos eligiéndonos, y eso es de las cosas que más valoro de nosotros.</p>
+                <p>Solo quiero que nunca dudes de lo mucho que significas para mí. Te amo por quien eres, por lo que somos juntos y por todo lo que todavía nos queda por vivir.</p>
+                <p>Felices 11 meses, mi amor. Te elegiría una y otra vez.</p>
+                <p class="signature">- Karla Torres</p>
+            </div>
+            <div class="envelope-pocket"></div>
+        </div>
+    </div>
+
+    <script>
+        function goToStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step' + stepNumber).classList.add('active');
+        }
+
+        function startLoading() {
+            goToStep(2);
+            let progress = 0;
+            let bar = document.getElementById('progressBar');
+            let text = document.getElementById('progressText');
+
+            let interval = setInterval(() => {
+                progress += 5;
+                bar.style.width = progress + '%';
+                text.innerText = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        goToStep(3);
+                    }, 300);
+                }
+            }, 80);
+        }
+
+        function openEnvelope() {
+            document.getElementById('envelope').classList.add('open');
+        }
+    </script>
+</body>
+</html>
