@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 11 Months Together</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-burgundy: #7a0010;
+            --accent-red: #c92a3e;
+            --bg-cream: #faf7f2;
+            --text-dark: #2b2b2b;
+            --paper-color: #fdfbf7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- FASE 1: SPLASH SCREEN --- */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(60, 0, 10, 0.65)), 
+                        url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            z-index: 1000;
+            transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+            padding: 20px;
+        }
+
+        .splash-title {
+            font-family: 'Alex Brush', cursive;
+            font-size: clamp(3.5rem, 8vw, 6.5rem);
+            color: #ffffff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .btn-start {
+            background: transparent;
+            color: #ffffff;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-start:hover {
+            background: #ffffff;
+            color: var(--primary-burgundy);
+            border-color: #ffffff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
+        }
+
+        /* Corazones Flotantes */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            color: #ff4d6d;
+            font-size: 20px;
+            z-index: 1001;
+            animation: floatUp 2.5s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--dx), var(--dy)) scale(1.5) rotate(360deg);
+            }
+        }
+
+        /* --- FASE 2: SECCIÓN DE LA CARTA & FOTO --- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--primary-burgundy);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .letter-photo-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+            margin-bottom: 90px;
+        }
+
+        @media (min-width: 768px) {
+            .letter-photo-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Sobre e Interacción */
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 280px;
+            margin: 0 auto;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .envelope {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #e6dac8;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            border: 1px solid #d4c4ae;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover {
+            transform: scale(1.02);
+        }
+
+        .seal {
+            width: 55px;
+            height: 55px;
+            background: var(--primary-burgundy);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #d4af37;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            border: 2px dashed #a30018;
+            z-index: 2;
+        }
+
+        .envelope-hint {
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--primary-burgundy);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        /* Carta Modal / Desplegada */
+        .letter-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .letter-content {
+            background: var(--paper-color);
+            border: 2px solid var(--primary-burgundy);
+            max-width: 550px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            position: relative;
+            animation: openModal 0.5s ease-out forwards;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        @keyframes openModal {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .letter-content h3 {
+            font-family: 'Alex Brush', cursive;
+            font-size: 2.8rem;
+            color: var(--primary-burgundy);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .letter-content p {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: var(--primary-burgundy);
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Lado Derecho: Foto Enmarcada */
+        .photo-card {
+            background: #ffffff;
+            padding: 15px 15px 45px 15px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            border: 1px solid #eaeaea;
+            transform: rotate(2deg);
+            transition: transform 0.3s ease;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .photo-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 380px;
+            object-fit: cover;
+            display: block;
+            border: 1px solid #eee;
+        }
+
+        .photo-caption {
+            font-family: 'Alex Brush', cursive;
+            font-size: 1.8rem;
+            text-align: center;
+            margin-top: 15px;
+            color: var(--primary-burgundy);
+        }
+
+        /* --- FASE 3: POST-ITS --- */
+        .postits-section {
+            margin-bottom: 90px;
+        }
+
+        .postits-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .postits-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-burgundy);
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+
+        .postits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .postit {
+            background: #ffffff;
+            border-top: 4px solid var(--primary-burgundy);
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+            min-height: 140px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .postit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        .postit-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            color: var(--primary-burgundy);
+            font-weight: 600;
+        }
+
+        .postit-text {
+            font-size: 0.95rem;
+            color: #444;
+            line-height: 1.4;
+            margin-top: 10px;
+        }
+
+        /* Post-it 12 Bloqueado */
+        .postit.locked {
+            background: #f2ede4;
+            border-top: 4px solid #aaa;
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+
+        .postit.locked:hover {
+            transform: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+        }
+
+        .postit.locked .postit-num {
+            color: #777;
+        }
+
+        .postit.locked .postit-text {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* --- FASE 4: BARRA DE CARGA --- */
+        .loading-section {
+            background: #ffffff;
+            border: 1px solid #eaeaea;
+            border-radius: 12px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            max-width: 750px;
+            margin: 0 auto 50px auto;
+        }
+
+        .loading-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-burgundy);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .loading-section p {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f0e9e0;
+            border-radius: 20px;
+            height: 24px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-burgundy), var(--accent-red));
+            border-radius: 20px;
+            transition: width 2s cubic-bezier(0.1, 0.5, 0.5, 1);
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: var(--primary-burgundy);
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 0.85rem;
+            color: #888;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FASE 1: INICIO (SPLASH) -->
+    <div id="splash-screen">
+        <h1 class="splash-title">Happy 11 Months Together</h1>
+        <button class="btn-start" onclick="startExperience(event)">Click Here</button>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+
+        <div class="section-header">
+            <p class="section-subtitle">Nuestra Historia — Capítulo 11</p>
+        </div>
+
+        <!-- FASE 2: CARTA Y FOTO -->
+        <div class="letter-photo-grid">
+            
+            <!-- Izquierda: Sobre Interactivo -->
+            <div>
+                <div class="envelope-wrapper" onclick="openLetter()">
+                    <div class="envelope">
+                        <div class="seal">♥</div>
+                    </div>
+                    <div class="envelope-hint">✨ Toca el sobre para abrir la carta ✨</div>
+                </div>
+            </div>
+
+            <!-- Derecha: Foto -->
+            <div>
+                <div class="photo-card">
+                    <!-- Reemplazar src con su foto favorita -->
+                    <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop" alt="Nosotros">
+                    <div class="photo-caption">Mes 11 juntos</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FASE 3: POST-ITS (DETALLES) -->
+        <div class="postits-section">
+            <div class="postits-header">
+                <h2>11 Pequeñas Razones</h2>
+                <p style="color: #666; font-size: 0.9rem;">Cosas que amo de nuestro camino juntos</p>
+            </div>
+
+            <div class="postits-grid">
+                <div class="postit">
+                    <span class="postit-num">01. Tu Sonrisa</span>
+                    <p class="postit-text">Esa manera única en la que iluminas cualquier día malo con solo sonreír.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">02. Nuestras Risas</span>
+                    <p class="postit-text">Por todas las risas tontas que compartimos sin que nadie más entienda el chiste.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">03. Tu Apoyo</span>
+                    <p class="postit-text">Por estar siempre ahí, creyendo en mí incluso cuando yo dudo.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">04. Los Abrazos</span>
+                    <p class="postit-text">Ese abrazo exacto que me da paz instantánea en los momentos difíciles.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">05. Tu Calidez</span>
+                    <p class="postit-text">Lo bonito que se siente construir un hogar y un refugio a tu lado.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">06. Nuestras Charlas</span>
+                    <p class="postit-text">Hablar de todo y de nada por horas sin cansarnos jamás.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">07. Tu Mirada</span>
+                    <p class="postit-text">Esa forma en la que me miras que me hace sentir la persona más afortunada.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">08. Las Aventuras</span>
+                    <p class="postit-text">Desde un viaje grande hasta una salida improvisada por un helado.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">09. Tu Paciencia</span>
+                    <p class="postit-text">Tu ternura y comprensión infinitas en cada paso del camino.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">10. Tu Esencia</span>
+                    <p class="postit-text">Simplemente por ser exactamente quien eres, sin cambiar nada.</p>
+                </div>
+                <div class="postit">
+                    <span class="postit-num">11. El Presente</span>
+                    <p class="postit-text">Por estos 11 meses maravillosos que son solo el comienzo.</p>
+                </div>
+
+                <!-- El Post-it 12 Bloqueado -->
+                <div class="postit locked">
+                    <span class="postit-num">12. El Gran Día 🔒</span>
+                    <p class="postit-text">Disponible el próximo mes en nuestro 1er Aniversario...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FASE 4: BARRA DE CARGA / PRONTO ANIVERSARIO -->
+        <div class="loading-section" id="loading-zone">
+            <h3>Actualización de Nuestra Historia</h3>
+            <p>Procesando el camino hacia el primer año juntos...</p>
+
+            <div class="progress-container">
+                <div class="progress-bar" id="myProgressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Completado</div>
+        </div>
+
+    </div>
+
+    <!-- CARTA POPUP / MODAL -->
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-content">
+            <span class="close-btn" onclick="closeLetter()">&times;</span>
+            <h3>Para Mi Amor</h3>
+            <p>Parece mentira lo rápido que pasa el tiempo cuando uno se la pasa increíble. Hoy cumplimos 11 meses juntos y no quería dejar pasar este día sin recordarte lo especial que eres para mí.</p>
+            <p>Gracias por cada risa, por cada abrazo reconfortante y por enseñarme lo bonito que es caminar de la mano con la persona correcta.</p>
+            <p>Estamos a solo un paso de nuestro primer año, y sinceramente, no puedo esperar para todo lo que viene. Te amo.</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Hecho con todo mi amor para ti • 11 Meses y contando</p>
+    </footer>
+
+    <!-- SCRIPT INTERACTIVO -->
+    <script>
+        function startExperience(e) {
+            const btn = e.target;
+            const rect = btn.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+
+            for (let i = 0; i < 35; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                heart.innerHTML = '♥';
+                
+                const dx = (Math.random() - 0.5) * 400 + 'px';
+                const dy = (Math.random() - 1) * 350 + 'px';
+                
+                heart.style.setProperty('--dx', dx);
+                heart.style.setProperty('--dy', dy);
+                heart.style.left = centerX + 'px';
+                heart.style.top = centerY + 'px';
+                
+                document.body.appendChild(heart);
+
+                setTimeout(() => heart.remove(), 2500);
+            }
+
+            const splash = document.getElementById('splash-screen');
+            setTimeout(() => {
+                splash.style.opacity = '0';
+                splash.style.transform = 'translateY(-100%)';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    triggerLoadingBar();
+                }, 1000);
+            }, 400);
+        }
+
+        function openLetter() {
+            document.getElementById('letterModal').style.display = 'flex';
+        }
+
+        function closeLetter() {
+            document.getElementById('letterModal').style.display = 'none';
+        }
+
+        function triggerLoadingBar() {
+            const progressBar = document.getElementById('myProgressBar');
+            const progressText = document.getElementById('progressText');
+            let currentWidth = 0;
+            const targetWidth = 91;
+
+            const interval = setInterval(() => {
+                if (currentWidth >= targetWidth) {
+                    currentWidth = targetWidth;
+                    clearInterval(interval);
+                    progressText.innerText = `¡${currentWidth}% Completado! (Cargando 1er Aniversario...)`;
+                } else {
+                    currentWidth++;
+                    progressBar.style.width = currentWidth + '%';
+                    progressText.innerText = `${currentWidth}% Procesado`;
+                }
+            }, 30);
+        }
+    </script>
+</body>
+</html>
