@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felices 11 Meses 🤍</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        
+        body { 
+            background: url('fondoluis.jpeg') no-repeat center center fixed; 
+            background-size: cover; 
+            color: #4a4a4a; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.93);
+            backdrop-filter: blur(6px);
+            max-width: 480px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step { display: none; }
+        .step.active { display: block; }
+
+        h1 { color: #d65a7a; font-size: 1.8rem; margin-bottom: 12px; }
+        p { color: #555; line-height: 1.6; margin-bottom: 20px; font-size: 1rem; }
+
+        /* Botones */
+        .btn {
+            background: #d65a7a;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(214, 90, 122, 0.3);
+        }
+        .btn:hover { background: #c24967; transform: translateY(-2px); }
+
+        /* Barra de Carga */
+        .progress-bar-container {
+            width: 100%;
+            background: #eee;
+            height: 16px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #f49ac2, #d65a7a);
+            transition: width 0.3s;
+        }
+
+        /* Sobre */
+        .envelope {
+            background: #ffe4e8;
+            border: 2px dashed #f49ac2;
+            padding: 30px 20px;
+            border-radius: 18px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin: 20px 0;
+        }
+        .envelope:hover { transform: scale(1.03); }
+        .envelope-icon { font-size: 45px; display: block; margin-bottom: 10px; }
+
+        /* Modal Carta */
+        .letter-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.65);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+        .letter-content {
+            background: white;
+            max-width: 480px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 20px;
+            position: relative;
+            text-align: left;
+            line-height: 1.6;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #aaa; }
+        .letter-content h3 { color: #d65a7a; margin-bottom: 15px; }
+        .letter-content p { margin-bottom: 15px; color: #444; }
+        .signature { text-align: right; font-weight: 600; color: #d65a7a; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        
+        <!-- PASO 1: Bienvenida -->
+        <div class="step active" id="step1">
+            <h1>¡Hola, mi amor! 🤍</h1>
+            <p>Preparé este detalle especial para recordar un momento muy importante para nosotros.</p>
+            <button class="btn" onclick="startExperience()">Comenzar ✨</button>
+        </div>
+
+        <!-- PASO 2: Carga interactiva -->
+        <div class="step" id="step2">
+            <h1>Calculando nuestro tiempo...</h1>
+            <p>Sumando momentos, risas y detalles compartidos 💫</p>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p id="progressText" style="font-weight: bold; color: #d65a7a;">0%</p>
+        </div>
+
+        <!-- PASO 3: Sobre con la carta -->
+        <div class="step" id="step3">
+            <h1>11 Meses Juntos 🤍</h1>
+            <p>Haz clic en el sobre para leer tu carta especial.</p>
+            
+            <div class="envelope" onclick="openLetter()">
+                <span class="envelope-icon">✉️</span>
+                <strong style="color: #d65a7a;">Abrir carta de amor</strong>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CARTA DESPLEGABLE -->
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-content">
+            <span class="close-btn" onclick="closeLetter()">&times;</span>
+            <h3>Mi amor,</h3>
+            <p>11 meses contigo y todavía me parece increíble pensar en todo lo que hemos construido desde aquel día en que nuestras vidas se cruzaron. No sé qué nos tenga preparado el futuro, pero sí sé que hoy te amo con una profundidad que nunca imaginé sentir por alguien.</p>
+            <p>Gracias por ser mi compañero, por cada abrazo que me devuelve la calma, por cada detalle y por cada momento en el que me haces sentir que no estoy sola. Hemos aprendido, hemos crecido y seguimos eligiéndonos, y eso es de las cosas que más valoro de nosotros.</p>
+            <p>Solo quiero que nunca dudes de lo mucho que significas para mí. Te amo por quien eres, por lo que somos juntos y por todo lo que todavía nos queda por vivir.</p>
+            <p>Felices 11 meses, mi amor. Te elegiría una y otra vez. 🤍</p>
+            <p class="signature">- Karla Torres</p>
+        </div>
+    </div>
+
+    <script>
+        function goToStep(stepNumber) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step' + stepNumber).classList.add('active');
+        }
+
+        function startExperience() {
+            goToStep(2);
+            let progress = 0;
+            let progressBar = document.getElementById('progressBar');
+            let progressText = document.getElementById('progressText');
+
+            let interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = progress + '%';
+                progressText.innerText = progress + '%';
+
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        goToStep(3);
+                    }, 500);
+                }
+            }, 100);
+        }
+
+        function openLetter() {
+            document.getElementById('letterModal').style.display = 'flex';
+        }
+
+        function closeLetter() {
+            document.getElementById('letterModal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
