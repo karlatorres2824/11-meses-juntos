@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Aniversario</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0a0d;
+            --wine-dark: #2a0812;
+            --wine-main: #581125;
+            --gold-accent: #d4af37;
+            --gold-light: #f3e5ab;
+            --parchment: #fdfbf7;
+            --text-dark: #2c2523;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Contenedor de Navegación entre Secciones */
+        .page-section {
+            display: none;
+            min-height: 100vh;
+            padding: 40px 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .page-section.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--gold-accent);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: #ccc;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        /* BOTONES DE NAVEGACIÓN */
+        .btn-next {
+            margin-top: 40px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--gold-accent), #aa820a);
+            color: #000;
+            font-weight: 600;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-next:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.5);
+        }
+
+        /* --- PÁGINA 5: SECCIÓN DE PEGATINAS --- */
+        .stickers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+        }
+
+        .sticker-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px dashed rgba(212, 175, 55, 0.3);
+            border-radius: 16px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(5px);
+        }
+
+        .sticker-icon {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .sticker-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: var(--gold-accent);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .sticker-card:hover .sticker-icon {
+            transform: scale(1.2) rotate(8deg);
+        }
+
+        .sticker-text {
+            font-size: 0.85rem;
+            color: var(--gold-light);
+            line-height: 1.4;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        /* --- PÁGINA 6: SOBRE Y CARTA --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            perspective: 1000px;
+        }
+
+        /* Sobre cerrado */
+        .envelope {
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(135deg, var(--wine-dark), var(--wine-main));
+            border-radius: 12px;
+            border: 2px solid var(--gold-accent);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.6s ease, opacity 0.6s ease;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(180deg, #3d0b1a, var(--wine-dark));
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            border-bottom: 2px solid var(--gold-accent);
+            transform-origin: top;
+            transition: transform 0.8s ease;
+            z-index: 3;
+        }
+
+        .wax-seal {
+            position: absolute;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ffd700, #b8860b);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--wine-dark);
+            font-size: 1.8rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            z-index: 4;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope:hover .wax-seal {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .envelope-title {
+            margin-top: 100px;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
+            color: var(--gold-light);
+            text-align: center;
+            z-index: 2;
+        }
+
+        /* Contenedor de la carta desplegada */
+        .letter-container {
+            display: none;
+            width: 100%;
+            max-width: 650px;
+            background: var(--parchment);
+            color: var(--text-dark);
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 80px rgba(212, 175, 55, 0.15);
+            border: 1px solid var(--gold-accent);
+            position: relative;
+            animation: fadeInLetter 1.2s ease forwards;
+        }
+
+        @keyframes fadeInLetter {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding-bottom: 15px;
+        }
+
+        .letter-header h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--wine-main);
+            font-size: 1.8rem;
+        }
+
+        .letter-body {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            text-align: justify;
+            white-space: pre-line;
+        }
+
+        .letter-footer {
+            margin-top: 30px;
+            text-align: right;
+            font-family: 'Great Vibes', cursive;
+            font-size: 2rem;
+            color: var(--wine-main);
+        }
+
+        /* EFECTO CORAZONES FLOTANTES */
+        .heart-particle {
+            position: fixed;
+            color: var(--gold-accent);
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: floatUp 2.5s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-120px) scale(1.5); }
+        }
+
+        @media (max-width: 600px) {
+            .stickers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .letter-container {
+                padding: 25px 20px;
+            }
+            .letter-body {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PÁGINA 5: PEGATINAS INTERACTIVAS -->
+    <section id="page5" class="page-section active">
+        <h1 class="section-title">Detalles de Nuestra Historia</h1>
+        <p class="section-subtitle">Pasa sobre cada pegatina para descubrir un recuadrito de nosotros</p>
+
+        <div class="stickers-grid">
+            <div class="sticker-card">
+                <span class="sticker-icon">✈️</span>
+                <p class="sticker-text">Por todos los kilómetros que nos separaron, y por cada reencuentro que hizo que la espera valiera la pena.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🫂</span>
+                <p class="sticker-text">Porque en tus brazos siento esa tranquilidad que no encuentro en ningún otro lugar.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🌹</span>
+                <p class="sticker-text">Por cada flor que me diste y por hacerme sentir querida incluso en los pequeños detalles.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">📱</span>
+                <p class="sticker-text">Por todas esas llamadas que hicieron que la distancia se sintiera un poquito menos grande.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🏠</span>
+                <p class="sticker-text">Porque contigo entendí que hogar también puede ser una persona.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🗺️</span>
+                <p class="sticker-text">Porque la distancia nunca fue más grande que las ganas de encontrarnos.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🎧</span>
+                <p class="sticker-text">Por nuestras canciones, nuestras llamadas y esos momentos en los que tu voz era todo lo que necesitaba.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🧸</span>
+                <p class="sticker-text">Por ese lado tuyo que me hace sentir cuidada, protegida y profundamente querida.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🧩</span>
+                <p class="sticker-text">No porque nos falte algo sin el otro, sino porque juntos hemos creado algo que solo puede ser nuestro.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">❤️</span>
+                <p class="sticker-text">Por todo lo que siento por ti y que todavía no sé explicar con palabras.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">😂</span>
+                <p class="sticker-text">Por todas nuestras tonterías que quizá nadie más entendería, pero que para mí significan muchísimo.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🫶</span>
+                <p class="sticker-text">Por seguir eligiéndonos incluso cuando querernos a distancia no siempre fue fácil.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">♾️</span>
+                <p class="sticker-text">Porque no sé cuánto tiempo nos dará la vida, pero sí sé que quiero aprovecharlo contigo.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🐧</span>
+                <p class="sticker-text">Porque entre todas las cosas que podrían representarnos, siempre habrá una pequeña parte de nosotros que solo nosotros entendemos.</p>
+            </div>
+            <div class="sticker-card">
+                <span class="sticker-icon">🥂</span>
+                <p class="sticker-text">Por nosotros, por lo que hemos sido, por lo que somos y por todo lo que todavía nos queda por vivir.</p>
+            </div>
+        </div>
+
+        <button class="btn-next" onclick="goToPage('page6')">Ir a la Carta Especial ❤️</button>
+    </section>
+
+    <!-- PÁGINA 6: CARTA DE ANIVERSARIO -->
+    <section id="page6" class="page-section">
+        <h1 class="section-title">Nuestra Carta de Aniversario</h1>
+        <p class="section-subtitle">Haz clic en el sello para abrir el sobre</p>
+
+        <div class="envelope-wrapper">
+            <!-- Sobre interactivo -->
+            <div class="envelope" id="envelope" onclick="openLetter(event)">
+                <div class="envelope-flap" id="flap"></div>
+                <div class="wax-seal">♥</div>
+                <div class="envelope-title">Para: Luis Fernando</div>
+            </div>
+
+            <!-- Carta Desplegada -->
+            <div class="letter-container" id="letter">
+                <div class="letter-header">
+                    <h2>Luis Fernando, mi amor:</h2>
+                </div>
+                <div class="letter-body">
+A veces me pongo a pensar en nosotros y me cuesta creer todo lo que hemos llegado a vivir. Hemos tenido que aprender a querernos entre kilómetros, despedidas, llamadas y momentos en los que extrañarte dolía más de lo que sabía decir. Y aun así, siempre hemos encontrado la manera de volver a nosotros. Creo que eso es una de las cosas que más amo de nuestra historia.
+
+Amo la forma en la que me haces sentir querida. En tus abrazos siento calma, en tus detalles siento que piensas en mí y en cada esfuerzo tuyo siento que realmente quieres cuidar lo que tenemos. Tal vez no siempre te digo cuánto veo esas cosas, pero las guardo. Guardo tus flores, tus notas, tu anillo, tus palabras y, sobre todo, la sensación de saber que hay alguien que me ama y que intenta hacerme feliz.
+
+Contigo he aprendido que sentirse amado también es sentirse cuidado. Y yo me siento así contigo. Por eso, cuando pienso en nuestro futuro, no necesito saber exactamente cómo será. Solo sé que quiero seguir encontrándote en él.
+
+Y si pudiera volver al principio, sabiendo todo lo que sé hoy —lo bonito, lo difícil, la distancia, las lágrimas, las risas y todo lo que hemos construido— te volvería a elegir. Porque al final, entre tantos caminos que podría haber tomado mi vida, el que me llevó hasta ti es el que más agradezco.
+
+Gracias por quedarte, por esforzarte, por amarme y por hacerme sentir que mi corazón tiene un lugar donde descansar.
+
+Te amo, Luis. Y si algún día la vida me pregunta dónde quiero estar, espero que mi respuesta siga siendo la misma: donde estés tú.
+                </div>
+                <div class="letter-footer">
+                    Feliz primer año, mi amor. 🩶
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navegación entre secciones
+        function goToPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Animación de Apertura del Sobre
+        function openLetter(event) {
+            const envelope = document.getElementById('envelope');
+            const flap = document.getElementById('flap');
+            const letter = document.getElementById('letter');
+
+            // Efecto de partículas de corazones al hacer clic
+            createHearts(event.clientX || window.innerWidth/2, event.clientY || window.innerHeight/2);
+
+            // Doblar solapa del sobre
+            flap.style.transform = 'rotateX(180deg)';
+
+            // Ocultar sobre y mostrar carta tras breve retraso
+            setTimeout(() => {
+                envelope.style.opacity = '0';
+                setTimeout(() => {
+                    envelope.style.display = 'none';
+                    letter.style.display = 'block';
+                }, 400);
+            }, 600);
+        }
+
+        // Crear corazones flotantes
+        function createHearts(x, y) {
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerHTML = '♥';
+                heart.style.left = (x + (Math.random() * 60 - 30)) + 'px';
+                heart.style.top = (y + (Math.random() * 60 - 30)) + 'px';
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 2500);
+            }
+        }
+    </script>
+</body>
+</html>
